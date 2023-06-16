@@ -1,0 +1,35 @@
+%! TeX Program = LuaLaTeX
+
+\makeatletter
+\def\ltj@stdmcfont{SourceHanSerifSC}
+\def\ltj@stdgtfont{SourceHanSansSC}
+\def\ltj@stdyokojfm{eva/{nstd,smpl}}
+\def\ltj@stdtatejfm{eva/{nstd,smpl,vert}}
+\makeatother
+
+\documentclass{ltjsarticle}
+
+\usepackage{fontspec}
+\setmainfont{Linux Libertine O}
+\setsansfont{Linux Biolinum O}
+\setmonofont{CMU Concrete}
+
+\usepackage{listings}
+\lstset{
+  basicstyle=\small\ttfamily,
+  breaklines=true
+}
+
+\usepackage{graphicx}
+\def\jstml{\reflectbox{J}\lower-.2ex\hbox{\kern-.04em{\small\scshape{STM}}}\kern-.22em\lower.4ex\hbox{\scalebox{-1}[1.28]{L}}}
+
+\ltjsetparameter{yjabaselineshift=0pt, yalbaselineshift=-.28ex}
+
+\begin{document}
+
+\title{{\jstml}\,\,文\,本\,结\,构\,化\,标\,记\,语\,言}
+\author{黄{\quad}京}
+\date{\,西历\today}
+\maketitle
+
+\end{document}

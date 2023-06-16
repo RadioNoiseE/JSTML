@@ -7,7 +7,7 @@
 
 ## 开发状态
 主体算是完成了，把项目clone下来make一下就行了（默认用的是clang、gcc的话改一下makefile）。<br/>
-文档在写（其实还没开始），Lua的自动化小脚本也还在想要有些什么功能。<br/>
+文档在写（其实还没开始），Lua的自动小脚本写完了（怎么用往后看）。<br/>
 不积极开发，看心情（呸、是时间）。<br/>
 
 ## 使用方法
@@ -17,14 +17,31 @@
 顺便说一句，这个parser处理的文件照理来说扩展名应该是`.jtm`，但这无所谓了，高兴就好。<br/>
 语法等文档，但其实真的很简单，大概五句话就结束了；但是希望我的同学能会用、老师能会用？<br/>
 
+## 自动化小脚本使用指北
+用法很简单，也没有与用户的交互，只需要创建一个文件然后运行它就好。<br/>
+你需要创建一个叫`jsindex.ind`的文件，里面要写你需要处理的文件（带后缀名）。<br/>
+照理来说一行写一个，然后换行；但是你要用逗号分隔也没问题：因为原理就是把换行符`\n`映射到`,`，再添上头和尾变成Lua的表格。<br/>
+然后运行就好了。等我把TeX Style Driver文件写完了那么运行完应该就会出现你要的PDF文件了。<br/>
+很遗憾我还没写完，所以现在运行只会报错。
+
 ## 小心黑魔法
 呃，我已经尽力了，处理函数大概用的都是`strn…()`系列的，但处理文件扩展名的用的就是邪恶的不带`n`的系列，如果可能会报「分段错误」。<br/>
 这个parser不具备任何教育价值，参考价值；或者说，除了能让他们写同学录没别的价值。<br/>
 你去看看源文件就会发现各种随意且风骚的函数、变量、宏……<br/>
 指针乱指、数组乱搞、地址引用都出现了，完全就是瞎写一通然后根据编译器报错乱改出来的东西。<br/>
-而且一个这么小的东西我分成了7、8个源文件，作用域、生存期这些不要去深究。<bf/>
+~~而且一个这么小的东西我分成了7、8个源文件，作用域、生存期这些不要去深究。~~<bf/>
+第二版本将其合并为一个文件，详细原因见该[issue#657: Clang hangs after "segmentation fault"](https://github.com/holzschu/a-shell/issues/657)（主要是iOS没有`os.fork()`函数导致clang在编译多文件项目时会挂）。：
 
-## \expandafter
+## 关于可执行文件
+克隆仓库后会发现里面有一个叫`jstml.wasm`的可执行文件。<br/>
+这个当然是web assembly的格式了，是我用iPad编译所得。<br/>
+编译器是：`clang -cc1 version 14.0.0 based upon LLVM 14.0.0git default target arm64-apple-darwin22.2.0`。<br/>
+那链接器当然就是wasm32了，参数如下：
+```
+-cc1 -triple wasm32-unknown-wasi -emit-obj -mrelax-all --mrelax-relocations -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name JSTML-WASM.c -mrelocation-model static -mframe-pointer=none -ffp-contract=on -fno-rounding-math -mconstructor-aliases -target-cpu generic -fvisibility hidden -debugger-tuning=gdb -target-linker-version 14.0.0
+```
+
+## `\expandafter`
 ```shell
 clang tokbuf.c creattok.c scantok.c asrktp.c jstparse.c textokenize.c jstml.c -o jstml.wasm
 segmentation fault
