@@ -1,0 +1,102 @@
+%% %%%%%%File jsdvr.tex%%%%%%%
+%% %part of the JSTML project%
+%% %%the plainTeX style file%%
+%% %%%%%author Jing Huang%%%%%
+%% %%%%%Copyright(c) 2023%%%%%
+%% %%%%%%%%MIT License%%%%%%%%
+
+%! TeX Program = LuaTeX
+
+%% ==> 導言區
+\catcode`@=11
+
+% PDF紙面設置
+\pagewidth=19cm
+\pageheight=24cm
+
+% PDF缺省信息
+\pdfextension info {
+  /Title    (jsdvr.pdf)
+  /Author   (JSTML)
+  /Subject  (Structured Text Markup Language)
+  /Keywords (Markup)
+}
+
+% PDF開啟動作
+\pdfextension catalog {
+  /PageMode /UseOutlines
+} openaction goto page2 {/Fit}
+
+% 使頁面處於紙面正中（用TeX的元語）
+\hoffset=-.54cm
+\voffset=-.54cm
+
+% 頁面大小（雙欄設置信息、非實際）及相關信息
+\hsize=7.3cm
+\vsize=40.4cm
+\maxdepth=2.6pt
+
+% 修改plain-TeX默認的輸出設定（雙欄）
+\output={\doublecolumnout}
+\def\doublecolumnout{%
+    \splittopskip=\topskip \splitmaxdepth=\maxdepth \dim@=20cm
+    \setbox0=\vsplit255 to \dim@
+    \setbox2=\vsplit255 to \dim@
+    \wd0=\hsize \wd2=\hsize
+    \shipout\vbox to 20cm{%
+            \offinterlineskip
+            \hbox to 15cm{\box0\hfil\box2}}
+    \unvbox255\penalty\outputpenalty}
+
+% 中日文預設定
+\def\ltj@stdmcfont{SourceHanSerif SC}
+\def\ltj@stdgtfont{SourceHanSans SC}
+\def\ltj@stdyokojfm{eva/{smpl,nstd,hgp}}
+\def\ltj@stdtatejfm{eva/{smpl,nstd,hgp,vert}}
+
+% 載入LuaTeX-ja並初始化字體（全局10pt明朝體）
+\input luatexja.sty
+
+% JSTML參數預處理（行長為字寬整數倍）
+\newdimen\txtwidth
+\newdimen\tagwidth
+\txtwidth=6cm
+\divide\txtwidth by \zw
+\multiply\txtwidth by \zw
+\tagwidth=7.3cm
+\advance\tagwidth by -\txtwidth
+
+% 設置左虛擬邊距、標記使用\llap置於其間
+\leftskip=\tagwidth
+
+% JSTML支持宏
+\def\jstml@tag#1{%
+    \llap{\hss\vbox{\hrule\hbox{%
+          \vrule\kern2.6pt\vbox{%
+                \kern2.6pt\tengt{#1}\kern2.6pt}%
+          \kern2.6pt\vrule}%
+    \hrule}\hskip6.6pt}}
+\def\jstml@txt#1{%
+    \hrule\kern2.6pt\tenmin{#1}%
+    \nobreak\vskip2.6pt\nobreak\hrule\vskip4pt}
+
+\catcode`@=12
+%% 導言區 <==
+
+%% ==> 正文區
+\msg{修改jsdvr.tex中的程式碼以改變缺省設置給}
+
+% 第一頁「標題」
+\begingroup
+\hsize=2in
+\tenmin
+JSTML文本标记语言\\
+缺省输出
+\endgroup
+\vfill\eject
+
+% 其餘實際輸出
+\input jsindex.ind
+
+\bye
+%% 正文區 <==

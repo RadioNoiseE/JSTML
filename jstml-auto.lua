@@ -1,3 +1,10 @@
+-- ----File jstml-auto.lua----
+-- -part of the JSTML project-
+-- ----the lua auto engine----
+-- -----author Jing Huang-----
+-- -----Copyright(c) 2023-----
+-- --------MIT License--------
+
 -- 讀入設定文件（索引）
 
 local cf = assert(io.open("jstml.conf", "r"))

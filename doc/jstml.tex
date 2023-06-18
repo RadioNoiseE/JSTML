@@ -9,6 +9,8 @@
 
 \documentclass{ltjsarticle}
 
+\usepackage[deluxe]{luatexja-fontspec}
+
 \usepackage{fontspec}
 \setmainfont{Linux Libertine O}
 \setsansfont{Linux Biolinum O}
@@ -21,15 +23,17 @@
 }
 
 \usepackage{graphicx}
-\def\jstml{\reflectbox{J}\lower-.2ex\hbox{\kern-.04em{\small\scshape{STM}}}\kern-.22em\lower.4ex\hbox{\scalebox{-1}[1.28]{L}}}
-
-\ltjsetparameter{yjabaselineshift=0pt, yalbaselineshift=-.28ex}
+\def\jstml{{\ltjsetparameter{yjabaselineshift=0pt, yalbaselineshift=-.18ex}%
+    \reflectbox{\fontspec[AutoFakeBold=0.2]{Linux Libertine O}J}%
+    \raise.3ex\hbox{\kern-.04em{\small\sffamily\scshape{stm}}}%
+    \kern-.22em\lower.45ex\hbox{\scalebox{-1}[1.26]{\fontspec[AutoFakeBold=0.2]{Linux Libertine O}L}}}}
 
 \begin{document}
 
-\title{{\jstml}\,\,文\,本\,结\,构\,化\,标\,记\,语\,言}
+\title{\bfseries{\jstml}\,\,文\,本\,结\,构\,化\,标\,记\,语\,言\\[2pt]%
+       {{\normalsize\itshape (a.k.a.,)\ \ \ \ }\Large Jing's Structured Markup Language}}
 \author{黄{\quad}京}
-\date{\,西历\today}
+\date{西\,历\today}
 \maketitle
 
 \end{document}
