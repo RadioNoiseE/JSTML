@@ -1,3 +1,10 @@
+// ///////File jstml.c////////
+// /part of the JSTML project/
+// //the c standalone parser//
+// /////author Jing Huang/////
+// /////Copyright(c) 2023/////
+// ////////MIT License////////
+
 # include <uchar.h>
 # include <stdio.h>
 # include <string.h>
