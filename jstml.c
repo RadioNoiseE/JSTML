@@ -11,15 +11,18 @@
 # include <stdlib.h>
 # include <assert.h>
 
+# define DEBUG 0
+# define DEBUGTOG if (DEBUG == 1)
 # define MAXCHAR 10240
 # define MAXTOK 8192
 # define MAXTAG 512
 # define MAXFLN 19
+# define MAXEXPTT 8
 # define TOKTYPE token.catcode
 # define TOKTXT token.param
 # define SCANTOKEN scantok(&token)
 # define OPTSPACE if (TOKTYPE == SPACE) scantok(&token)
-# define OPTSPANL if (TOKTYPE == SPACE || TOKTYPE == NLINE) scantok(&token)
+# define OPTSPANL while (TOKTYPE == SPACE || TOKTYPE == NLINE) scantok(&token)
 # define DARKMAGI printf("Unknown magic: I'm stymied.\n")
 # define ARRYLITR (int [])
 # define SEGMFCHK (MAXTOK - strlen(psd_token) - 1)
@@ -138,16 +141,22 @@ void scantok(struct protok * pt_token)
 void asstt(int * pt_toktype)
 {
   int tktp_asrt = 0;
+  int cnt = 0;
+  char exp_toktype[MAXEXPTT] = {0};
 
   while (*pt_toktype != -6) {
     if (*pt_toktype == TOKTYPE) {
       tktp_asrt = 1;
       break;
     } else
-      pt_toktype++;
+      exp_toktype[cnt++] = *pt_toktype++;
   }
+  exp_toktype[cnt] = '\0';
 
-  assert(tktp_asrt);
+  if (tktp_asrt != 1) {
+    printf("Assertion failed: %s (toktype: %i, expected: %s)\n", TOKTXT, TOKTYPE, exp_toktype);
+    exit(EXIT_FAILURE);
+  }
  
   return;
 }
@@ -165,9 +174,10 @@ void parse(void)
     return;
   else
     OPTSPANL;
-
+  DEBUGTOG printf("asrtfail: no1; toktype: %i (toktxt: %s; expected toktype: %i)\n", TOKTYPE, TOKTXT, BGROUP);
   asstt(ARRYLITR{BGROUP, ASRTEND});
   SCANTOKEN;
+  DEBUGTOG printf("asrtfail: no2; toktype: %i, (toktxt: %s; expected toktype: %i, %i, %i)\n", TOKTYPE, TOKTXT, SPACE, MULBEG, PARATXT);
   asstt(ARRYLITR{SPACE, MULBEG, PARATXT, ASRTEND});
   OPTSPACE;
 
@@ -176,6 +186,7 @@ void parse(void)
     strncat(psd_token, TOKTXT, SEGMFCHK);
   } else if (TOKTYPE == MULBEG) {
     SCANTOKEN;
+    DEBUGTOG printf("asrtfail: no3; toktype: %i (toktxt: %s; expected toktype: %i, %i)\n", TOKTYPE, TOKTXT, SPACE, PARATXT);
     asstt(ARRYLITR{SPACE, PARATXT, ASRTEND});
     OPTSPACE;
     if (TOKTYPE == PARATXT) {
@@ -187,40 +198,49 @@ void parse(void)
   } else
     DARKMAGI;
   SCANTOKEN;
-  asstt(ARRYLITR{SPACE, EGROUP});
+  DEBUGTOG printf("asrtfail: no4; toktype: %i (toktxt: %s; expected toktype: %i, %i)\n", TOKTYPE, TOKTXT, SPACE, EGROUP);
+  asstt(ARRYLITR{SPACE, EGROUP, ASRTEND});
   OPTSPACE;
   strncat(psd_token, DELISTR, SEGMFCHK);
 
   SCANTOKEN;
   if (!muline) {
+    DEBUGTOG printf("asrtfail: no5; toktype: %i (toktxt: %s; expected toktype: %i, %i)\n", TOKTYPE, TOKTXT, SPACE, PARATXT);
     asstt(ARRYLITR{SPACE, PARATXT, ASRTEND});
     OPTSPACE;
     if (TOKTYPE == PARATXT) {
       strncat(psd_token, TOKTXT, SEGMFCHK);
       SCANTOKEN;
+      DEBUGTOG printf("asrtfail: no6; toktype: %i (toktxt: %s; expected toktype: %i)\n", TOKTYPE, TOKTXT, NLINE);
       asstt(ARRYLITR{NLINE, ASRTEND});
     } else
       DARKMAGI;
   } else {
+    DEBUGTOG printf("asrtfail: no7; toktype: %i (toktxt: %s; expected toktype: %i, %i, %i)\n", TOKTYPE, TOKTXT, SPACE, NLINE, PARATXT);
     asstt(ARRYLITR{SPACE, NLINE, PARATXT, ASRTEND});
     OPTSPANL;
     while (TOKTYPE == PARATXT) {
       strncat(psd_token, TOKTXT, SEGMFCHK);
       SCANTOKEN;
+      DEBUGTOG printf("asrtfail: no8; toktype: %i (toktxt: %s; expected toktype: %i)\n", TOKTYPE, TOKTXT, NLINE);
       asstt(ARRYLITR{NLINE, ASRTEND});
       OPTSPANL;
     }
+    DEBUGTOG printf("asrtfail: no9; toktype: %i (toktxt: %s; expected toktype: %i)\n", TOKTYPE, TOKTXT, BGROUP);
     asstt(ARRYLITR{BGROUP, ASRTEND});
     SCANTOKEN;
     OPTSPACE;
+    DEBUGTOG printf("asrtfail: no10; toktype: %i (toktxt: %s; expected toktype: %i)\n", TOKTYPE, TOKTXT, MULEND);
     asstt(ARRYLITR{MULEND, ASRTEND});
     SCANTOKEN;
     OPTSPACE;
+    DEBUGTOG printf("asrtfail: no11; toktype: %i (toktxt: %s; expected toktype: %i)\n", TOKTYPE, TOKTXT, PARATXT);
     asstt(ARRYLITR{PARATXT, ASRTEND});
     if (strcmp(TOKTXT, multag))
       printf("parse: unmatched tag [WRN]\n");
     SCANTOKEN;
     OPTSPACE;
+    DEBUGTOG printf("asrtfail: no12; toktype: %i (toktxt: %s; expected toktype: %i)\n", TOKTYPE, TOKTXT, EGROUP);
     asstt(ARRYLITR{EGROUP, ASRTEND});
   }
   strncat(psd_token, DELISTR, SEGMFCHK);
