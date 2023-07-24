@@ -67,7 +67,7 @@
 你去看看源文件就会发现各种随意且风骚的函数、变量、宏……<br/>
 指针乱指、数组乱搞、地址引用都出现了，完全就是瞎写一通然后根据编译器报错乱改出来的东西。<br/>
 ~~而且一个这么小的东西我分成了7、8个源文件，作用域、生存期这些不要去深究。~~<br/>
-第二版本将其合并为一个文件，详细原因见该[issue#657: Clang hangs after "segmentation fault"](https://github.com/holzschu/a-shell/issues/657)（主要是iOS没有`os.fork()`函数导致clang在编译多文件项目时会挂）。：
+第二版本将其合并为一个文件，详细原因见该[issue#657: Clang hangs after "segmentation fault"](https://github.com/holzschu/a-shell/issues/657)（主要是iOS没有`os.fork()`函数导致clang在编译多文件项目时会挂）。（试试`make`）
 
 ## 关于可执行文件
 克隆仓库后会发现里面有一个叫`jstml.wasm`的可执行文件。<br/>
