@@ -1,4 +1,4 @@
-# *J*ing's *S*tructured *T*ext *M*arkup *L*anguage
+# *J*STML *S*tructured *T*ext *M*arkup *L*anguage
 
 ## 这是什么
 一个简单的parser，将特定的（当然、超简单［甚至都没有嵌套］）的文本文件转义至TeX，并定义一个超简单的TeX Style Class来处理它。<br/>
