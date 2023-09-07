@@ -1,4 +1,4 @@
-.PONY : complie
+.PHONY : complie
 .SUFFIXES : .o
 .c.o :
 	clang -o ${.TARGET} -c ${.IMPSRC} 
