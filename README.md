@@ -71,7 +71,7 @@
 
 ## 关于可执行文件
 克隆仓库后会发现里面有一个叫`jstml.wasm`的可执行文件。<br/>
-这个当然是web assembly的格式了，是我用iPad编译所得。<br/>
+这个当然是web assembly的格式了，是我用iPad使用wasi-sdk编译所得。<br/>
 编译器是：`clang -cc1 version 14.0.0 based upon LLVM 14.0.0git default target arm64-apple-darwin22.2.0`。<br/>
 那链接器当然就是wasm32了，参数如下：
 ```
