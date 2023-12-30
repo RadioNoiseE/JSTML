@@ -41,7 +41,7 @@ struct protok
 struct protok token;
 
 char file_tl[MAXCHAR];
- 
+
 void readfile(FILE * in_stream, char * pt_file_tl)
 {
   int cnt, chr;
@@ -157,7 +157,7 @@ void asstt(int * pt_toktype)
     printf("Assertion failed: %s (toktype: %i, expected: %s)\n", TOKTXT, TOKTYPE, exp_toktype);
     exit(EXIT_FAILURE);
   }
- 
+
   return;
 }
 
@@ -311,17 +311,17 @@ int main(int argc, char * argv[])
 
   if (argc != (output_default ? 1 : 2)) {
     printf("Usage: jstml [-o output] input\n");
-    
+
     exit(EXIT_FAILURE);
   } else {
     if (output_default)
       strcat(strcpy(output_fname, *argv), ".tex");
     else
       strcpy(output_fname, *argv++);
-    
+
     ofp = fopen(output_fname, "w");
     ifp = fopen(*argv, "r");
-    
+
     readfile(ifp, file_tl);
     parse();
     tokenize(ofp);
